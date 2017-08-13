@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<geckocode>
+  <meta>
+    <options oplib="default"></options>
+    <target name="Mario Kart Wii" region="NTSC-US"></target>
+    <name>No Item Boxes</name>
+    <note>04814D68 38800000</note>
+  </meta>
+  <code>
+    <write32 addr="0x814D68" value="0x38800000" />
+  </code>
+</geckocode>

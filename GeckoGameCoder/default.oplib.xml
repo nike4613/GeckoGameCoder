@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<oplib name="default">
+	<op name="write8">
+		<arg name="addr" type="num" min="0x0" max="0x2000000" />
+		<arg name="base" type="bool" default="false" />
+		<arg name="reps" type="num" min="0" max="0xFFFF" />
+		<arg name="value" type="num" min="0x0" max="0xFF" />
+		
+		<output>
+			<word i="0">
+				<bit i="0-2" value="0" />
+				<bit i="3" value="=base" />
+				<bit i="4-6" value="0" />
+				<bit i="7-31" value="=addr" />
+			</word>
+			<word i="1">
+				<bit i="0-15" value="=reps" />
+				<bit i="16-23" value="0" />
+				<bit i="24-31" value="=value" />
+			</word>
+		</output>
+	</op>
+	<op name="write16">
+		<arg name="addr" type="num" min="0x0" max="0x2000000" />
+		<arg name="base" type="bool" default="false" />
+		<arg name="reps" type="num" min="0" max="0xFFFF" />
+		<arg name="value" type="num" min="0x0" max="0xFFFF" />
+		
+		<output>
+			<word i="0">
+				<bit i="0-2" value="0" />
+				<bit i="3" value="=base" />
+				<bit i="4-6" value="1" />
+				<bit i="7-31" value="=addr" />
+			</word>
+			<word i="1">
+				<bit i="0-15" value="=reps" />
+				<bit i="16-31" value="=value" />
+			</word>
+		</output>
+	</op>
+	<op name="write32">
+		<arg name="addr" type="num" min="0x0" max="0x2000000" />
+		<arg name="base" type="bool" default="false" />
+		<arg name="value" type="num" min="0x0" max="0xFFFFFFFF" />
+		
+		<output>
+			<word i="0">
+				<bit i="0-2" value="0" />
+				<bit i="3" value="=base" />
+				<bit i="4-6" value="2" />
+				<bit i="7-31" value="=addr" />
+			</word>
+			<word i="1">
+				<bit i="0-31" value="=value" />
+			</word>
+		</output>
+	</op>
+	<op name="writestr">
+		<arg name="addr" type="num" min="0x0" max="0x2000000" />
+		<arg name="base" type="bool" default="false" />
+		<arg name="value" type="str">
+			<test expr="arg.Length" lte="0xFFFFFFFF" />
+			<set var="vlen" value="arg.Length" />
+		</arg>
+		
+		<output>
+			<word i="0">
+				<bit i="0-2" value="0" />
+				<bit i="3" value="=base" />
+				<bit i="4-6" value="3" />
+				<bit i="7-31" value="=addr" />
+			</word>
+			<word i="1">
+				<bit i="0-31" value="=vlen" />
+			</word>
+			<bytes i="2-" values="=value" pad="8" />
+		</output>
+	</op>
+	<op name="multiskip">
+		<arg name="addr" type="num" min="0x0" max="0x2000000" />
+		<arg name="base" type="bool" default="false" />
+		<arg name="init" type="num" min="0x0" max="0xFFFFFFFF" />
+		<arg name="valsize" type="enum" enum=">">
+			<enum type="num">
+				<value name="byte" value="0" />
+				<value name="halfword" value="1" />
+				<value name="word" value="2" />
+			</enum>
+		</arg>
+		<arg name="numaddrs" type="num" min="0" max="0xFFF" />
+		<arg name="addrinc" type="num" min="0" max="0xFFFF" />
+		<arg name="valinc" type="num" min="0" max="0xFFFFFFFF" />
+		
+		<output>
+			<word i="0">
+				<bit i="0-2" value="0" />
+				<bit i="3" value="=base" />
+				<bit i="4-6" value="4" />
+				<bit i="7-31" value="=addr" />
+			</word>
+			<word i="1">
+				<bit i="0-31" value="=init" />
+			</word>
+			<word i="2">
+				<bit i="0-3" value="=valsize" />
+				<bit i="4-15" value="=numaddrs" />
+				<bit i="16-31" value="=addrinc" />
+			</word>
+			<word i="3">
+				<bit i="0-31" value="=valinc" />
+			</word>
+		</output>
+	</op>
+	
+</oplib>
